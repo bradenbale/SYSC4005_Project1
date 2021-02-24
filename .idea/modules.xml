@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/SYSC4005_Project.iml" filepath="$PROJECT_DIR$/SYSC4005_Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/inspector/inspector.iml" filepath="$PROJECT_DIR$/inspector/inspector.iml" />
+    </modules>
+  </component>
+</project>
