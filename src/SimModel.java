@@ -12,11 +12,21 @@ public class SimModel {
     public static List WS1buffer1, WS2buffer1, WS2buffer2, WS3buffer1, WS3buffer2;
 
     // Inputs
-    public static double[] servinsp1, servinsp22, servinsp23, ws1, ws2, ws3; //inspection times and workstation times
+    public static double[][] ws1D = {{}, };
+    public static double[][] ws2D = {{}, {}, {}};
+    public static double[][] ws3D = {{}, {}, {}};
+    public static double[][] i1D = {{}, {}, {}};
+    public static double[][] i2D = {{}, {}, {}};
+
     public static int servinsp1_index, servinsp22_index, servinsp23_index, ws1_index, ws2_index, ws3_index; // to keep track of the element of interest
     // Metrics, Stats, and Counters
     private static double I1BT, I2BT; // double to track decimals
 
+
+
+    private static double getRandomTime(double TD[][], Random RNV){
+
+    }
 
     private static void initialization(){
         // initializes the
