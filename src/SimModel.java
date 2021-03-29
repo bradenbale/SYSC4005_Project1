@@ -18,10 +18,6 @@ public class SimModel {
     private static double I1BT, I2BT; // double to track decimals
 
 
-    private static double[] readFile(String fileName) {
-        // reads from given data files and returns an array
-    }
-
     private static void initialization(){
         // initializes the
         seconds = 0;
@@ -62,44 +58,45 @@ public class SimModel {
         }
     }
 
-    private static void ProcessInspector(SimEvent evt){
+    private static void ProcessInspector(SimEvent evt) {
         System.out.print(" event = inspector has finished inspecting " + evt.getInspectorID().getID());
-        if(!I1busy && evt.getInspectorID().getID() == 1){
-            if(WS1buffer1.size() < 2) {
+        if (!I1busy && evt.getInspectorID().getID() == 1) {
+            if (WS1buffer1.size() < 2) {
                 WS1buffer1.add(1);
                 I1busy = true;
                 I1inBusy = Clock;
-            }else if(WS2buffer1.size() < 2){
+            } else if (WS2buffer1.size() < 2) {
                 WS2buffer1.add(1);
                 I1busy = true;
                 I1inBusy = Clock;
-            }else if(WS3buffer1.size() < 2){
+            } else if (WS3buffer1.size() < 2) {
                 WS3buffer1.add(1);
                 I1busy = true;
                 I1inBusy = Clock;
-            }else{
+            } else {
                 I1busy = false;
                 I1BlockedTime = Clock;
             }
-        }else if(!I2busy && evt.getInspectorID().getID() == 2) {
-            if(evt.getInspectorID().getComponentNumber() == 2) {
-                if(WS2buffer2.size() < 2){
-                WS2buffer2.add(2);
-                I2busy = true;
-                I2inBusy = Clock;
-                }else{
+        } else if (!I2busy && evt.getInspectorID().getID() == 2) {
+            if (evt.getInspectorID().getComponentNumber() == 2) {
+                if (WS2buffer2.size() < 2) {
+                    WS2buffer2.add(2);
+                    I2busy = true;
+                    I2inBusy = Clock;
+                } else {
                     I2busy = false;
                     I2BlockedTime = Clock;
                 }
-            }else if(evt.getInspectorID().getComponentNumber() == 3) {
-                if(WS3buffer2.size() < 2){
+            } else if (evt.getInspectorID().getComponentNumber() == 3) {
+                if (WS3buffer2.size() < 2) {
                     WS2buffer2.add(3);
                     I2busy = true;
                     I2inBusy = Clock;
-                }else{
+                } else {
                     I2busy = false;
                     I2BlockedTime = Clock;
                 }
+            }
         }
     }
 
@@ -140,13 +137,13 @@ public class SimModel {
     }
 
     private static void ScheduleEvent(int index, double[] process_time_array, SimEvent incomingEvent, inspector ins, workstation work){
-        double newRn = -1.0;
+        double newRN = -1.0;
         switch(incomingEvent.geteType()){
             case I_process:
-                newRN = getRandomTime();
+                //newRN = getRandomTime();
                 break;
             case WS_process:
-                newRN = getRandomTime();
+                //newRN = getRandomTime();
                 break;
             case ES:
         }
