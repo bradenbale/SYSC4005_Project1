@@ -2,9 +2,11 @@ import java.util.*;
 public class inspector {
 
     public inspector(int ID){
-        this.ID = ID;
-        this.inpsComponent = 0;
+        this.ID = ID; // ID for the inspector
+        this.inpsComponent = 0; // which component the inspector is currently working on
     }
+
+    //initialize variables
 
     private int ID;
     private int inpsComponent;
@@ -22,6 +24,8 @@ public class inspector {
     public int getComponentNumber() {
         return inpsComponent;
     }
+
+    // for ID one the component is always 1, for two, the component is either 2 or 3
 
     public void setComponentNumber() {
         if(ID == 1) this.inpsComponent = 1;
