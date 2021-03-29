@@ -139,12 +139,17 @@ public class SimModel {
         }
     }
 
-    private static void ScheduleEventInspector(int index, double[] process_time_array, SimEvent.eventType eType, inspector ins){
-
-    }
-
-    private static void ScheduleEventWorkstation(int index, double[] process_time_array, SimEvent.eventType eType, workstation ws){
-
+    private static void ScheduleEvent(int index, double[] process_time_array, SimEvent incomingEvent, inspector ins, workstation work){
+        double newRn = -1.0;
+        switch(incomingEvent.geteType()){
+            case I_process:
+                newRN = getRandomTime();
+                break;
+            case WS_process:
+                newRN = getRandomTime();
+                break;
+            case ES:
+        }
     }
 
     private static void ProcessSimEvent(SimEvent nxtEvent){
