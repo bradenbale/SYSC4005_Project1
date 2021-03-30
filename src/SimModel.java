@@ -6,13 +6,14 @@ public class SimModel {
     public static double seconds, minutes, hours, currentDay, simDays, Clock; // double to track decimals
     public static double I1BlockedTime, I2BlockedTime, IdleWS1, IdleWS2, IdleWS3, WS1inUse, WS2inUse, WS3inUse, I1inBusy, I2inBusy; // double to track decimals
     public static boolean WS1busy, WS2busy, WS3busy, I1busy, I2busy;
+    public static Random RNGws1, RNGws2, RNGws3, RNGi1, RNGi22, RNGi23;
     private static Queue<SimEvent> FEL; //Future event list
     public static Queue<inspector> IQ; // the inspector queue when a buffer is full
     public static Queue<workstation> WQ; // the inspector queue when a buffer is full
     public static List WS1buffer1, WS2buffer1, WS2buffer2, WS3buffer1, WS3buffer2;
 
     // Inputs
-    public static double[][] ws1D = {{}, };
+    public static double[][] ws1D = {{0.222, 0.09}, {0.666, 0.17}, {1.11, 0.245}, {1.554, 0.3159}, {1.998, }};
     public static double[][] ws2D = {{}, {}, {}};
     public static double[][] ws3D = {{}, {}, {}};
     public static double[][] i1D = {{}, {}, {}};
@@ -30,6 +31,7 @@ public class SimModel {
 
     private static void initialization(){
         // initializes the
+        Clock = 0;
         seconds = 0;
         minutes = 0;
         hours = 0;
