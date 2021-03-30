@@ -4,7 +4,7 @@ public class SimModel {
 
     //Sim Model Variables
     public static double seconds, minutes, hours, currentDay, simDays, Clock, workdayHours; // double to track decimals
-    public static double I1BlockedTime, I2BlockedTime, IdleWS1, IdleWS2, IdleWS3, WS1inUse, WS2inUse, WS3inUse, I1inBusy, I2inBusy; // double to track decimals
+    public static double I1BlockedTime, I2BlockedTime, IdleWS1, IdleWS2, IdleWS3;
     public static boolean WS1busy, WS2busy, WS3busy, I1busy, I2busy;
     public static Random RNGws1, RNGws2, RNGws3, RNGi1, RNGi22, RNGi23;
     private static Queue<SimEvent> FEL; //Future event list
@@ -59,14 +59,41 @@ public class SimModel {
 
     private static void initialization(){
         // initializes the
-        Clock = 0;
+        Clock = 0.0;
         seconds = 0;
         minutes = 0;
         hours = 0;
         currentDay = 1;
-        I1BT = 0;
-        I2BT = 0;
-        simDays = 5;
+        I1BlockedTime = 0;
+        I2BlockedTime = 0;
+        I1inBusy=0;
+        I2inBusy=0;
+        WS1inUse=0;
+        WS2inUse=0;
+        WS3inUse=0;
+        IdleWS1=0;
+        IdleWS2=0;
+        IdleWS3=0;
+        UI1=0;
+        UI2=0;
+        UW1=0;
+        UW2=0;
+        UW3=0;
+
+        simDays = 10;
+
+        //Creating the inspectors
+        inspector I1 = new inspector(1);
+        inspector I2 = new inspector(2);
+
+        //Creating the workstations
+        workstation WS1 = new workstation(1);
+        workstation WS2 = new workstation(2);
+        workstation WS3 = new workstation(3);
+
+        //Set inspector 1 to work on C1, inspector 2 works on either C2 or C3
+        I1.setComponentNumber();
+        I2.setComponentNumber();
     }
 
     public static void main(String[] args) {
@@ -153,17 +180,20 @@ public class SimModel {
             if (WS1buffer1.size() < 2) {
                 WS1buffer1.add(1);
                 I1busy = true;
+                evt.getInspectorID().setComponentNumber();
                 I1inBusy += Clock - I1BlockedTime;
                 ScheduleEvent(evt);
             } else if (WS2buffer1.size() < 2) {
                 WS2buffer1.add(1);
                 I1busy = true;
-                I1inBusy = Clock;
+                evt.getInspectorID().setComponentNumber();
+                I1inBusy += Clock - I1BlockedTime;
                 ScheduleEvent(evt);
             } else if (WS3buffer1.size() < 2) {
                 WS3buffer1.add(1);
                 I1busy = true;
-                I1inBusy = Clock;
+                evt.getInspectorID().setComponentNumber();
+                I1inBusy += Clock - I1BlockedTime;
                 ScheduleEvent(evt);
             } else {
                 I1busy = false;
@@ -173,6 +203,7 @@ public class SimModel {
             if (evt.getInspectorID().getComponentNumber() == 2) {
                 if (WS2buffer2.size() < 2) {
                     WS2buffer2.add(2);
+                    evt.getInspectorID().setComponentNumber();
                     I2busy = true;
                     I2inBusy += Clock - I2BlockedTime;
                     ScheduleEvent(evt);
@@ -183,6 +214,7 @@ public class SimModel {
             } else if (evt.getInspectorID().getComponentNumber() == 3) {
                 if (WS3buffer2.size() < 2) {
                     WS3buffer2.add(3);
+                    evt.getInspectorID().setComponentNumber();
                     I2busy = true;
                     I2inBusy = Clock;
                     ScheduleEvent(evt);
