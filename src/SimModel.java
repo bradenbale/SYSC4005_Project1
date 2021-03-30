@@ -68,10 +68,34 @@ public class SimModel {
     }
 
     public static void main(String[] args) {
+        //long seed = Long.parseLong("12345");    // Creating a seed for the random number generators
+        RNGloading = new Random();                // Initializing the RNGs
+        RNGscale = new Random();
+        RNGtravel = new Random();
 
+        FEL = new PriorityQueue<>();            // Initializing the FEL and waiting queues
+        LQ = new LinkedList<>();
+        WQ = new LinkedList<>();
+
+        Initialization();
+
+        System.out.print("\n-----------------------------------------------------------\n");
+        System.out.print("Day " + currentDay +"\n");
+        while ((currentDay <= simDays) && !(FEL.isEmpty())) {
+            SimEvent imminentEVT = FEL.poll();
+            if (imminentEVT != null) {
+                Clock = imminentEVT.geteTime();
+                System.out.print("Clock = " + Clock);
+                ProcessSimEvent(imminentEVT);
+            }
+            //System.out.print("SIM: FEL isEmpty = " + FEL.isEmpty() +"\n");
+        }
+        GenerateReport();
     }
 
     private static void GenerateReport(){
+
+
 
     }
 
@@ -127,9 +151,10 @@ public class SimModel {
                 }
             } else if (evt.getInspectorID().getComponentNumber() == 3) {
                 if (WS3buffer2.size() < 2) {
-                    WS2buffer2.add(3);
+                    WS3buffer2.add(3);
                     I2busy = true;
                     I2inBusy = Clock;
+
                 } else {
                     I2busy = false;
                     I2BlockedTime = Clock;
@@ -148,7 +173,6 @@ public class SimModel {
             }else{
                 WS1busy = true;
                 WS1inUse = Clock;
-                evt.getWorkstationID().removeBuffer1();
                 WS1buffer1.remove(0);
             }
         }else if(!WS2busy && evt.getWorkstationID().getID() == 2){
@@ -174,14 +198,14 @@ public class SimModel {
         }
     }
 
-    private static void ScheduleEvent(int index, double[] process_time_array, SimEvent incomingEvent, inspector ins, workstation work){
+    private static void ScheduleEvent(SimEvent incomingEvent){
         double newRN = -1.0;
         switch(incomingEvent.geteType()){
             case I_process:
-                newRN = generateInspectorTime(ins.getID(), ins.getComponentNumber());
+                newRN = generateInspectorTime(incomingEvent.getInspectorID().getID(), incomingEvent.getInspectorID().getComponentNumber());
                 break;
             case WS_process:
-                newRN = generateWSTime(work.getID());
+                newRN = generateWSTime(incomingEvent.getWorkstationID().getID());
                 break;
             case ES:
         }
