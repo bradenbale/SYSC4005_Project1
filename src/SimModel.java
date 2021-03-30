@@ -21,7 +21,9 @@ public class SimModel {
 
     public static int servinsp1_index, servinsp22_index, servinsp23_index, ws1_index, ws2_index, ws3_index; // to keep track of the element of interest
     // Metrics, Stats, and Counters
-    private static double I1BT, I2BT; // double to track decimals
+    private static double I1inBusy, I2inBusy; // holds in busy times of inspectors
+    private static double WS1inUse, WS2inUse, WS3inUse; // holds in use times of workstations
+    private static double UI1, UI2, UW1, UW2, UW3; // double to calculate utilization
 
 
 
@@ -98,9 +100,19 @@ public class SimModel {
     }
 
     private static void GenerateReport(){
+        UI1 = (I1inBusy/Clock)*100;
+        UI2 = (I2inBusy/Clock)*100;
+        UW1 = (WS1inUse/Clock)*100;
+        UW2 = (WS2inUse/Clock)*100;
+        UW3 = (WS3inUse/Clock)*100;
 
-
-
+        System.out.print("\n---------------------------------------------------------\n");
+        System.out.print("Statistics\n");
+        System.out.print("Inspector 1 Utilization = " + UI1 + "\n");
+        System.out.print("Inspector 1 Utilization = " + UI2 + "\n");
+        System.out.print("Workstation 1 Utilization = " + UW1 + "\n");
+        System.out.print("Workstation 2 Utilization = " + UW2 + "\n");
+        System.out.print("Workstation 3 Utilization = " + UW3 + "\n");
     }
 
     private static void checkMinutes(double seconds) {
@@ -141,7 +153,7 @@ public class SimModel {
             if (WS1buffer1.size() < 2) {
                 WS1buffer1.add(1);
                 I1busy = true;
-                I1inBusy = Clock;
+                I1inBusy += Clock - I1BlockedTime;
                 ScheduleEvent(evt);
             } else if (WS2buffer1.size() < 2) {
                 WS2buffer1.add(1);
@@ -162,7 +174,7 @@ public class SimModel {
                 if (WS2buffer2.size() < 2) {
                     WS2buffer2.add(2);
                     I2busy = true;
-                    I2inBusy = Clock;
+                    I2inBusy += Clock - I2BlockedTime;
                     ScheduleEvent(evt);
                 } else {
                     I2busy = false;
@@ -191,14 +203,14 @@ public class SimModel {
                 WS1busy = false;
             }else{
                 WS1busy = true;
-                WS1inUse = Clock;
+                WS1inUse += Clock - IdleWS1;
                 WS1buffer1.remove(0);
                 ScheduleEvent(evt);
             }
         }else if(!WS2busy && evt.getWorkstationID().getID() == 2){
             if(!WS2buffer1.isEmpty() && !WS2buffer2.isEmpty()){
                 WS2busy = true;
-                WS2inUse = Clock;
+                WS2inUse += Clock - IdleWS2;
                 WS2buffer1.remove(0);
                 WS2buffer2.remove(0);
                 ScheduleEvent(evt);
@@ -209,7 +221,7 @@ public class SimModel {
         }else if(!WS3busy && evt.getWorkstationID().getID() == 3){
             if(!WS3buffer1.isEmpty() && !WS3buffer2.isEmpty()){
                 WS3busy = true;
-                WS3inUse = Clock;
+                WS3inUse += Clock - IdleWS3;
                 WS3buffer1.remove(0);
                 WS3buffer2.remove(0);
                 ScheduleEvent(evt);
