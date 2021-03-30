@@ -69,15 +69,19 @@ public class SimModel {
 
     public static void main(String[] args) {
         //long seed = Long.parseLong("12345");    // Creating a seed for the random number generators
-        RNGloading = new Random();                // Initializing the RNGs
-        RNGscale = new Random();
-        RNGtravel = new Random();
+        // Initializing the RNGs
+        RNGws1 = new Random();
+        RNGws2 = new Random();
+        RNGws3 = new Random();
+        RNGi1 = new Random();
+        RNGi22 = new Random();
+        RNGi23 = new Random();
 
         FEL = new PriorityQueue<>();            // Initializing the FEL and waiting queues
-        LQ = new LinkedList<>();
         WQ = new LinkedList<>();
+        IQ = new LinkedList<>();
 
-        Initialization();
+        initialization();
 
         System.out.print("\n-----------------------------------------------------------\n");
         System.out.print("Day " + currentDay +"\n");
