@@ -25,8 +25,34 @@ public class SimModel {
 
 
 
-    private static double getRandomTime(double TD[][], Random RNV){
+    public static double generateInspectorTime(int insNum, int compNum){
+        Random rand = new Random();
+        double randTime=0;
+        if(insNum==1){
+            randTime= Math.log(1-rand.nextDouble())/(-0.0965);
+        }
+        else if(insNum==2 && compNum==2) {
+            randTime= Math.log(1 - rand.nextDouble()) / (-0.0643);
+        }
+        else if(insNum==2 && compNum==3){
+            randTime = Math.log(1-rand.nextDouble())/(-0.0485);
+        }
+        return randTime;
+    }
 
+    public static double generateWSTime(int wsNum){
+        Random rand = new Random();
+        double randTime=0;
+        if(wsNum==1){
+            randTime= Math.log(1-rand.nextDouble())/(-0.2171);
+        }
+        else if(wsNum==2) {
+            randTime= Math.log(1 - rand.nextDouble()) / (-0.09015);
+        }
+        else if(wsNum==3){
+            randTime =Math.log(1-rand.nextDouble())/(-0.1137);
+        }
+        return randTime;
     }
 
     private static void initialization(){
@@ -152,10 +178,10 @@ public class SimModel {
         double newRN = -1.0;
         switch(incomingEvent.geteType()){
             case I_process:
-                //newRN = getRandomTime();
+                newRN = generateInspectorTime(ins.getID(), ins.getComponentNumber());
                 break;
             case WS_process:
-                //newRN = getRandomTime();
+                newRN = generateWSTime(work.getID());
                 break;
             case ES:
         }
