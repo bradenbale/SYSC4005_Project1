@@ -3,7 +3,7 @@ import java.util.*;
 public class SimModel {
 
     //Sim Model Variables
-    public static double seconds, minutes, hours, currentDay, simDays, Clock; // double to track decimals
+    public static double seconds, minutes, hours, currentDay, simDays, Clock, workdayHours; // double to track decimals
     public static double I1BlockedTime, I2BlockedTime, IdleWS1, IdleWS2, IdleWS3, WS1inUse, WS2inUse, WS3inUse, I1inBusy, I2inBusy; // double to track decimals
     public static boolean WS1busy, WS2busy, WS3busy, I1busy, I2busy;
     public static Random RNGws1, RNGws2, RNGws3, RNGi1, RNGi22, RNGi23;
@@ -124,6 +124,17 @@ public class SimModel {
         }
     }
 
+    private static void checkSimDay(double clockVal) {
+        if (((Clock/(workdayHours*60)) + 1) > currentDay) {
+            //    currentDay += 1;
+            //Clock = 0;
+            currentDay = (Clock/(workdayHours*60)) + 1;
+            System.out.print("\n-----------------------------------------------------------\n");
+            System.out.print("Day " + currentDay +"\n");
+        }
+
+    }
+
     private static void ProcessInspector(SimEvent evt) {
         System.out.print(" event = inspector has finished inspecting " + evt.getInspectorID().getID());
         if (!I1busy && evt.getInspectorID().getID() == 1) {
@@ -131,14 +142,17 @@ public class SimModel {
                 WS1buffer1.add(1);
                 I1busy = true;
                 I1inBusy = Clock;
+                ScheduleEvent(evt);
             } else if (WS2buffer1.size() < 2) {
                 WS2buffer1.add(1);
                 I1busy = true;
                 I1inBusy = Clock;
+                ScheduleEvent(evt);
             } else if (WS3buffer1.size() < 2) {
                 WS3buffer1.add(1);
                 I1busy = true;
                 I1inBusy = Clock;
+                ScheduleEvent(evt);
             } else {
                 I1busy = false;
                 I1BlockedTime = Clock;
@@ -149,6 +163,7 @@ public class SimModel {
                     WS2buffer2.add(2);
                     I2busy = true;
                     I2inBusy = Clock;
+                    ScheduleEvent(evt);
                 } else {
                     I2busy = false;
                     I2BlockedTime = Clock;
@@ -158,7 +173,7 @@ public class SimModel {
                     WS3buffer2.add(3);
                     I2busy = true;
                     I2inBusy = Clock;
-
+                    ScheduleEvent(evt);
                 } else {
                     I2busy = false;
                     I2BlockedTime = Clock;
@@ -178,6 +193,7 @@ public class SimModel {
                 WS1busy = true;
                 WS1inUse = Clock;
                 WS1buffer1.remove(0);
+                ScheduleEvent(evt);
             }
         }else if(!WS2busy && evt.getWorkstationID().getID() == 2){
             if(!WS2buffer1.isEmpty() && !WS2buffer2.isEmpty()){
@@ -185,6 +201,7 @@ public class SimModel {
                 WS2inUse = Clock;
                 WS2buffer1.remove(0);
                 WS2buffer2.remove(0);
+                ScheduleEvent(evt);
             }else{
                 IdleWS2 = Clock;
                 WS2busy = false;
@@ -195,6 +212,7 @@ public class SimModel {
                 WS3inUse = Clock;
                 WS3buffer1.remove(0);
                 WS3buffer2.remove(0);
+                ScheduleEvent(evt);
             }else{
                 IdleWS3 = Clock;
                 WS3busy = false;
@@ -213,6 +231,14 @@ public class SimModel {
                 break;
             case ES:
         }
+        checkSimDay(newRN);
+        SimEvent newEVT = new SimEvent(incomingEvent.geteType(), Clock + newRN, incomingEvent.getInspectorID(), incomingEvent.getWorkstationID());
+        if(newEVT.geteType().equals(SimEvent.eventType.I_process)){
+            System.out.print(" => new event = " + newEVT.geteType() + " time " + newEVT.geteTime() + " inspector " + newEVT.getInspectorID().getID());
+        }else{
+            System.out.print(" => new event = " + newEVT.geteType() + " time " + newEVT.geteTime() + " workstation " + newEVT.getWorkstationID().getID());
+        }
+        FEL.offer(newEVT);
     }
 
     private static void ProcessSimEvent(SimEvent nxtEvent){

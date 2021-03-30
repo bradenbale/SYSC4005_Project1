@@ -3,11 +3,11 @@ public class SimEvent implements Comparable<SimEvent>{
 
     public static enum eventType {I_process, WS_process, ES};    // ALQ=Arrival at Loader Queue, EL=End of Loading, EW=End of Weighing, ES=End of Simulation
     private eventType eType;        // Type of the event
-    private Integer eTime;          // Event Time
+    private double eTime;          // Event Time
     private inspector InspectorID;      // Which truck is this event for.
     private workstation WorkstationID;
 
-    public SimEvent(eventType eType, int eTime, inspector InspectorID, workstation WorkstationID) {
+    public SimEvent(eventType eType, double eTime, inspector InspectorID, workstation WorkstationID) {
         this.eType = eType;
         this.eTime = eTime;
         this.InspectorID = InspectorID;
@@ -15,7 +15,7 @@ public class SimEvent implements Comparable<SimEvent>{
     }
 
     public int compareTo(SimEvent ev) {
-        return this.geteTime().compareTo(ev.geteTime());
+        return 0;
     }
 
     public eventType geteType() {
@@ -26,11 +26,11 @@ public class SimEvent implements Comparable<SimEvent>{
         this.eType = eType;
     }
 
-    public Integer geteTime() {
+    public double geteTime() {
         return eTime;
     }
 
-    public void seteTime(int eTime) {
+    public void seteTime(double eTime) {
         this.eTime = eTime;
     }
 
