@@ -198,7 +198,7 @@ public class SimModel {
                 evt.getInspectorID().setComponentNumber();
                 I1inBusy += Clock - I1BlockedTime;
                 ScheduleEvent(evt);
-                ScheduleEvent(new SimEvent(SimEvent.eventType.WS_process, 0, null, 1));
+                //ScheduleEvent(new SimEvent(SimEvent.eventType.WS_process, 0, null, 1));
             } else if (WS2buffer1.size() < 2) {
                 WS2buffer1.add(1);
                 I1busy = true;
