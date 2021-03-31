@@ -58,7 +58,6 @@ public class SimModel {
     }
 
     private static void initialization(){
-        // initializes the
         Clock = 0.0;
         seconds = 0;
         minutes = 0;
@@ -92,8 +91,24 @@ public class SimModel {
         workstation WS3 = new workstation(3);
 
         //Set inspector 1 to work on C1, inspector 2 works on either C2 or C3
+
         I1.setComponentNumber();
+
+        System.out.print("\n-------------------------------\n");
+        System.out.print("Initial State of the simulation\n");
+        System.out.print("Inspector 1 working on C1 for WS1");
+        I1busy=true;
+        I1.setComponentNumber();
+        SimEvent newEVT = new SimEvent(SimEvent.eventType.I_process,0, I1,null);
+        ScheduleEvent(newEVT);
+        System.out.println("");
+
+        I2busy=true;
         I2.setComponentNumber();
+        System.out.print("Inspector 2 working on C2 or C3 for WS2 or WS3\n");
+        SimEvent newEVT2 = new SimEvent(SimEvent.eventType.I_process,0, I2,null);
+        ScheduleEvent(newEVT2);
+        System.out.println("");
     }
 
     public static void main(String[] args) {
@@ -183,6 +198,7 @@ public class SimModel {
                 evt.getInspectorID().setComponentNumber();
                 I1inBusy += Clock - I1BlockedTime;
                 ScheduleEvent(evt);
+                ScheduleEvent(new SimEvent(SimEvent.eventType.WS_process, 0, null, 1));
             } else if (WS2buffer1.size() < 2) {
                 WS2buffer1.add(1);
                 I1busy = true;
