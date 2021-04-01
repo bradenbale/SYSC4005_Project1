@@ -13,7 +13,7 @@ public class SimEvent implements Comparable<SimEvent>{
         this.InspectorID = InspectorID;
         this.WorkstationID = WorkstationID;
     }
-
+    @Override
     public int compareTo(SimEvent ev) {
         return 0;
     }
